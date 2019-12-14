@@ -16,6 +16,8 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 
 import styles from '../styles/homePage.js';
+import navigate from '../utils/navigate';
+import { EXAMPLE } from '../constants/screens';
 
 import { Container, Content, Button } from 'native-base';
 
@@ -66,14 +68,7 @@ class HomePage extends React.Component {
           <View>
             <Container>
               <Content>
-                <Button primary onPress={() =>
-                {
-                  const screenNumber = navigation.state.params ? navigation.state.params.screenNumber : 0;
-                  const params = { screenNumber: screenNumber + 1 };
-                  params.fromBottom = true; 
-                  navigation.navigate('Example', params);
-                }
-                }>
+                <Button primary onPress={() => navigate(navigation, EXAMPLE, false)}>
                   <Text> Primary </Text>
                 </Button>
               </Content>
