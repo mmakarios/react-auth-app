@@ -183,7 +183,12 @@
       "jquery": true,
       "jest": true
     },
-    "globals": {}
+    "globals": {},
+    "settings": {
+      "import/ignore": [
+        "node_modules"
+      ]
+    }
   },
   "author": "",
   "license": "ISC"
