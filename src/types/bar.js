@@ -1,2 +1,0 @@
-export const BAR_EXAMPLE = 'BAR_EXAMPLE';
-export const BAR_ANOTHER_EXAMPLE = 'BAR_ANOTHER_EXAMPLE';
