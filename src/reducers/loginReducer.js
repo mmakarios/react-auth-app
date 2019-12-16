@@ -24,8 +24,8 @@ export const loginActionFailure = () => {
   };
 };
 
-function loginAction() {
-  return fetch(endpoints.LOGIN)
+function loginAction(user) {
+  return fetch(endpoints.LOGIN, { method: 'POST', body: JSON.stringify(user) })
     .then(handleResponse)
     .then(res => res.json());
 }

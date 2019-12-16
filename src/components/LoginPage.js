@@ -32,7 +32,7 @@ class LoginPage extends Component {
 
   handleInputChange(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const value = target.value;
     const name = target.name;
 
     this.setState({
@@ -40,9 +40,9 @@ class LoginPage extends Component {
     });
   }
 
-  handleSubmit(user) {
+  handleSubmit() {
     event.preventDefault();
-    this.props.postLogin(user);
+    this.props.postLogin(this.state);
   }
 
   render() {
