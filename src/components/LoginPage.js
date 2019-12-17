@@ -1,6 +1,8 @@
 import { connect } from 'react-redux';
 import { postLogin } from '../reducers/loginReducer';
 import { bindActionCreators } from 'redux';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -18,67 +20,43 @@ class LoginPage extends Component {
     user: PropTypes.object,
   };
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: '',
-      password: '',
-    };
-
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleInputChange(event) {
-    const target = event.target;
-    const value = target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value,
-    });
-  }
-
-  handleSubmit() {
-    event.preventDefault();
-    this.props.postLogin(this.state);
-  }
-
   render() {
     // const { isFetching, error } = this.props;
     return (
       <div>
         <div>
           <h1>Login</h1>
-          <form onSubmit={this.handleSubmit}>
-            <div>
-              <label>
-                Username:
-                <input
-                  required
-                  name="username"
-                  type="text"
-                  value={this.state.username}
-                  onChange={this.handleInputChange}
-                />
-              </label>
+          <Formik
+            initialValues={{ username: '', password: '' }}
+            validationSchema={Yup.object({
+              username: Yup.string().required('Please type your username.'),
+              password: Yup.string().required('Please type your password.'),
+            })}
+            onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(false);
+              this.props.postLogin(values);
+            }}
+          >
+            <Form>
+              <div>
+                <label htmlFor="username">Username:</label>
+                <br />
+                <Field name="username" type="text" />
+                <br />
+                <ErrorMessage name="username" />
+                <br />
+                <br />
+                <label>Password:</label>
+                <br />
+                <Field name="password" type="password" />
+                <br />
+                <ErrorMessage name="password" />
+              </div>
               <br />
-              <label>
-                Password:
-                <input
-                  required
-                  name="password"
-                  type="password"
-                  value={this.state.password}
-                  onChange={this.handleInputChange}
-                />
-              </label>
-            </div>
-            <br />
-            <input type="submit" value="Log in" />
-            <input type="button" value="Sign up" />
-          </form>
+              <button type="submit">Log in</button>
+              <input type="button" value="Sign up" />
+            </Form>
+          </Formik>
         </div>
       </div>
     );
@@ -89,7 +67,6 @@ const mapStateToProps = state => {
   return {
     isFetching: state.login.isFetching,
     error: state.login.error,
-    user: state.user,
   };
 };
 
