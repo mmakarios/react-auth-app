@@ -1,27 +1,24 @@
-import { connect } from 'react-redux';
-import { postLogin } from '../reducers/loginReducer';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-// import './LoginPage.scss';
-// import PasswordInput from '../shared/input/PasswordInput';
-// import EmailInput from '../shared/input/EmailInput';
-// import Button from '../shared/Button';
-// import * as routes from '../../constants/routesNames';
+import { postLogin } from '../reducers/loginReducer';
+import { push } from 'connected-react-router';
+import * as routes from '../constants/routes';
 
 class LoginPage extends Component {
   static propTypes = {
     postLogin: PropTypes.func,
+    push: PropTypes.func,
     isFetching: PropTypes.bool,
     error: PropTypes.bool.isRequired,
-    user: PropTypes.object,
   };
 
   render() {
-    // const { isFetching, error } = this.props;
+    const { push } = this.props;
     return (
       <div>
         <div>
@@ -54,7 +51,9 @@ class LoginPage extends Component {
               </div>
               <br />
               <button type="submit">Log in</button>
-              <input type="button" value="Sign up" />
+              <button type="button" onClick={() => push(routes.SIGNUP_PAGE)}>
+                Sign up
+              </button>
             </Form>
           </Formik>
         </div>
@@ -73,6 +72,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     postLogin: bindActionCreators(postLogin, dispatch),
+    push: bindActionCreators(push, dispatch),
   };
 };
 
