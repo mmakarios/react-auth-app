@@ -52,27 +52,30 @@ class LoginPage extends Component {
         <div>
           <h1>Login</h1>
           <form onSubmit={this.handleSubmit}>
-            <label>
-              Usuário:
-              <input
-                required
-                name="username"
-                type="text"
-                value={this.state.username}
-                onChange={this.handleInputChange}
-              />
-            </label>
-
-            <label>
-              Senha:
-              <input
-                required
-                name="password"
-                type="password"
-                value={this.state.password}
-                onChange={this.handleInputChange}
-              />
-            </label>
+            <div>
+              <label>
+                Username:
+                <input
+                  required
+                  name="username"
+                  type="text"
+                  value={this.state.username}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+              <br />
+              <label>
+                Password:
+                <input
+                  required
+                  name="password"
+                  type="password"
+                  value={this.state.password}
+                  onChange={this.handleInputChange}
+                />
+              </label>
+            </div>
+            <br />
             <input type="submit" value="Log in" />
             <input type="button" value="Sign up" />
           </form>
