@@ -18,7 +18,7 @@ class LoginPage extends Component {
   };
 
   render() {
-    const { push } = this.props;
+    const { postLogin, push } = this.props;
     return (
       <div>
         <div>
@@ -31,7 +31,7 @@ class LoginPage extends Component {
             })}
             onSubmit={(values, { setSubmitting }) => {
               setSubmitting(false);
-              this.props.postLogin(values);
+              postLogin(values);
             }}
           >
             <Form>
