@@ -6,20 +6,27 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { postSignUp } from '../reducers/signUpReducer';
-import { push } from 'connected-react-router';
 import * as routes from '../constants/routes';
 
 class SignUpPage extends Component {
   static propTypes = {
-    postSignUp: PropTypes.func,
-    push: PropTypes.func,
-    isFetching: PropTypes.bool,
+    postSignUp: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+    isFetching: PropTypes.bool.isRequired,
     error: PropTypes.bool.isRequired,
-    user: PropTypes.object,
+    madeSignUp: PropTypes.bool.isRequired,
   };
 
+  componentDidUpdate() {
+    const { madeSignUp, history } = this.props;
+
+    if (madeSignUp) {
+      history.replace(routes.LOGIN_PAGE);
+    }
+  }
+
   render() {
-    const { postSignUp, push } = this.props;
+    const { postSignUp, history } = this.props;
     return (
       <div>
         <div>
@@ -62,7 +69,10 @@ class SignUpPage extends Component {
               </div>
               <br />
               <button type="submit">Sign up</button>
-              <button type="button" onClick={() => push(routes.LOGIN_PAGE)}>
+              <button
+                type="button"
+                onClick={() => history.push(routes.LOGIN_PAGE)}
+              >
                 Cancel
               </button>
             </Form>
@@ -77,13 +87,13 @@ const mapStateToProps = state => {
   return {
     isFetching: state.signUp.isFetching,
     error: state.signUp.error,
+    madeSignUp: state.signUp.madeSignUp,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     postSignUp: bindActionCreators(postSignUp, dispatch),
-    push: bindActionCreators(push, dispatch),
   };
 };
 

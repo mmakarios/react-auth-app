@@ -1,6 +1,4 @@
-import { push } from 'connected-react-router';
 import * as endpoints from '../constants/endpoints';
-import * as routes from '../constants/routes';
 
 // action types
 export const POST_SIGNUP_BEGIN = 'POST_SIGNUP_BEGIN';
@@ -49,7 +47,6 @@ export const postSignUp = user => {
     return signUpAction(user)
       .then(() => {
         dispatch(signUpActionSuccess());
-        dispatch(push(routes.LOGIN_PAGE));
       })
       .catch(error => {
         dispatch(signUpActionFailure(error));
@@ -61,6 +58,7 @@ export const postSignUp = user => {
 export const signUpInitialState = {
   error: false,
   isFetching: false,
+  madeSignUp: false,
 };
 
 // reducers
@@ -71,18 +69,21 @@ const signUpReducer = (state = signUpInitialState, action) => {
         ...state,
         isFetching: true,
         error: false,
+        madeSignUp: false,
       };
     case POST_SIGNUP_SUCCESS:
       return {
         ...state,
         isFetching: false,
         error: false,
+        madeSignUp: true,
       };
     case POST_SIGNUP_FAILURE:
       return {
         ...state,
         isFetching: false,
         error: true,
+        madeSignUp: false,
       };
     default:
       return state;
