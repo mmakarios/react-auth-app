@@ -5,6 +5,12 @@ import { connect } from 'react-redux';
 
 import { getDishes } from '../reducers/dishesReducer';
 
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
+
 class HomePage extends Component {
   static propTypes = {
     getDishes: PropTypes.func,
@@ -28,7 +34,29 @@ class HomePage extends Component {
       <div>
         <h1>Home web</h1>
 
-        {data && data.dishes[0].description}
+        {data &&
+          data.dishes.map(dish => {
+            return (
+              <Card className="card" key={dish.description}>
+                <CardActionArea>
+                  <CardMedia
+                    className="card-media"
+                    image={dish.image}
+                    title="Dish"
+                  />
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      color="textSecondary"
+                      component="p"
+                    >
+                      {dish.description}
+                    </Typography>
+                  </CardContent>
+                </CardActionArea>
+              </Card>
+            );
+          })}
       </div>
     );
   }
