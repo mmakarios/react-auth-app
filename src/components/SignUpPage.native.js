@@ -5,8 +5,24 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
+import {
+  Container,
+  Header,
+  Content,
+  Text,
+  Title,
+  Button,
+  Body,
+  Input,
+  Label,
+  Item,
+  Form,
+  Left,
+  Right,
+} from 'native-base';
+
 import { postSignUp } from '../reducers/signUpReducer';
-import { View, Button, Text, TextInput } from 'react-native';
+import { View } from 'react-native';
 import { LOGIN_SCREEN } from '../constants/screens';
 
 class SignUpPage extends Component {
@@ -29,72 +45,88 @@ class SignUpPage extends Component {
   render() {
     const { postSignUp, navigation } = this.props;
     return (
-      <View>
-        <Text>Sign up screen</Text>
-        <Formik
-          initialValues={{ username: '', password: '', confirmPassword: '' }}
-          validationSchema={Yup.object({
-            username: Yup.string().required('Please type your username.'),
-            password: Yup.string().required('Please type your password.'),
-            confirmPassword: Yup.string()
-              .oneOf([Yup.ref('password'), null], 'Passwords must match')
-              .required('Please confirm your password.'),
-          })}
-          onSubmit={(values, { setSubmitting }) => {
-            setSubmitting(false);
-            postSignUp(values);
-          }}
-        >
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            touched,
-            errors,
-          }) => (
-            <View>
-              <Text>Username:</Text>
-              <TextInput
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                value={values.username}
-              />
-              <Text style={{ fontSize: 10, color: 'red' }}>
-                {touched.username && errors.username}
-              </Text>
+      <Container>
+        <Header>
+          <Left></Left>
+          <Body>
+            <Title>Sign up screen</Title>
+          </Body>
+          <Right></Right>
+        </Header>
+        <Content>
+          <Formik
+            initialValues={{ username: '', password: '', confirmPassword: '' }}
+            validationSchema={Yup.object({
+              username: Yup.string().required('Please type your username.'),
+              password: Yup.string().required('Please type your password.'),
+              confirmPassword: Yup.string()
+                .oneOf([Yup.ref('password'), null], 'Passwords must match')
+                .required('Please confirm your password.'),
+            })}
+            onSubmit={(values, { setSubmitting }) => {
+              setSubmitting(false);
+              postSignUp(values);
+            }}
+          >
+            {({
+              handleChange,
+              handleBlur,
+              handleSubmit,
+              values,
+              touched,
+              errors,
+            }) => (
+              <View>
+                <Form>
+                  <Item stackedLabel>
+                    <Label>Username</Label>
+                    <Input
+                      onChangeText={handleChange('username')}
+                      onBlur={handleBlur('username')}
+                      value={values.username}
+                    />
+                  </Item>
+                  <Text style={{ fontSize: 14, color: 'red' }}>
+                    {touched.username && errors.username}
+                  </Text>
+                  <Item stackedLabel>
+                    <Label>Password</Label>
+                    <Input
+                      secureTextEntry
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                    />
+                  </Item>
+                  <Text style={{ fontSize: 14, color: 'red' }}>
+                    {touched.password && errors.password}
+                  </Text>
 
-              <Text>Password:</Text>
-              <TextInput
-                secureTextEntry
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                value={values.password}
-              />
-              <Text style={{ fontSize: 10, color: 'red' }}>
-                {touched.password && errors.password}
-              </Text>
+                  <Item stackedLabel>
+                    <Label>Confirm password:</Label>
+                    <Input
+                      secureTextEntry
+                      onChangeText={handleChange('confirmPassword')}
+                      onBlur={handleBlur('confirmPassword')}
+                      value={values.confirmPassword}
+                    />
+                  </Item>
+                  <Text style={{ fontSize: 14, color: 'red' }}>
+                    {touched.confirmPassword && errors.confirmPassword}
+                  </Text>
+                </Form>
 
-              <Text>Confirm password:</Text>
-              <TextInput
-                secureTextEntry
-                onChangeText={handleChange('confirmPassword')}
-                onBlur={handleBlur('confirmPassword')}
-                value={values.confirmPassword}
-              />
-              <Text style={{ fontSize: 10, color: 'red' }}>
-                {touched.confirmPassword && errors.confirmPassword}
-              </Text>
-
-              <Button title="Sign up" onPress={handleSubmit}></Button>
-              <Button
-                title="Cancel"
-                onPress={() => navigation.navigate(LOGIN_SCREEN)}
-              ></Button>
-            </View>
-          )}
-        </Formik>
-      </View>
+                <Button onPress={handleSubmit}>
+                  <Text>Sign up</Text>
+                </Button>
+                <Button onPress={() => navigation.navigate(LOGIN_SCREEN)}>
+                  <Text>Cancel</Text>
+                </Button>
+              </View>
+            )}
+          </Formik>
+        </Content>
+      </Container>
     );
   }
 }
