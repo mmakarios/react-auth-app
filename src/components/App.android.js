@@ -1,18 +1,25 @@
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import transitionConfig from '../utils/transitionConfig';
 import HomePage from './HomePage';
 import LoginPage from './LoginPage';
 
-const MainNavigator = createStackNavigator(
+const AppStack = createStackNavigator(
+  { Home: HomePage },
+  { headerMode: 'none', transitionConfig }
+);
+const AuthStack = createStackNavigator(
+  { Login: LoginPage },
+  { headerMode: 'none', transitionConfig }
+);
+
+const MainNavigator = createSwitchNavigator(
   {
-    Home: { screen: HomePage },
-    Login: { screen: LoginPage },
+    App: AppStack,
+    Auth: AuthStack,
   },
   {
-    initialRouteName: 'Home',
-    headerMode: 'none',
-    transitionConfig,
+    initialRouteName: 'Auth',
   }
 );
 

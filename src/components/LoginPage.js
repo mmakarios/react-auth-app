@@ -6,19 +6,28 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
 import { postLogin } from '../reducers/loginReducer';
-import { push } from 'connected-react-router';
 import * as routes from '../constants/routes';
 
 class LoginPage extends Component {
   static propTypes = {
     postLogin: PropTypes.func,
-    push: PropTypes.func,
+    history: PropTypes.object.isRequired,
     isFetching: PropTypes.bool,
     error: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool,
   };
 
+  componentDidUpdate() {
+    const { isLoggedIn, history } = this.props;
+
+    if (isLoggedIn) {
+      history.replace(routes.HOME_PAGE);
+    }
+  }
+
   render() {
-    const { postLogin, push } = this.props;
+    const { postLogin, history } = this.props;
+
     return (
       <div>
         <div>
@@ -51,7 +60,10 @@ class LoginPage extends Component {
               </div>
               <br />
               <button type="submit">Log in</button>
-              <button type="button" onClick={() => push(routes.SIGNUP_PAGE)}>
+              <button
+                type="button"
+                onClick={() => history.push(routes.SIGNUP_PAGE)}
+              >
                 Sign up
               </button>
             </Form>
@@ -66,13 +78,13 @@ const mapStateToProps = state => {
   return {
     isFetching: state.login.isFetching,
     error: state.login.error,
+    isLoggedIn: state.login.isLoggedIn,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     postLogin: bindActionCreators(postLogin, dispatch),
-    push: bindActionCreators(push, dispatch),
   };
 };
 

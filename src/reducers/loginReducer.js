@@ -1,6 +1,4 @@
-import { push } from 'connected-react-router';
 import * as endpoints from '../constants/endpoints';
-import * as routes from '../constants/routes';
 
 // action types
 export const POST_LOGIN_BEGIN = 'POST_LOGIN_BEGIN';
@@ -46,7 +44,6 @@ export const postLogin = user => {
     return loginAction(user)
       .then(() => {
         dispatch(loginActionSuccess());
-        dispatch(push(routes.HOME_PAGE));
       })
       .catch(error => {
         dispatch(loginActionFailure(error));
