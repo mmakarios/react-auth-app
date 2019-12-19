@@ -32,7 +32,7 @@ class HomePage extends Component {
 
     return (
       <div>
-        <h1>Home web</h1>
+        <h1>Home</h1>
 
         {data &&
           data.dishes.map(dish => {

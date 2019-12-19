@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Image } from 'react-native';
 
-import * as screens from '../constants/screens';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getDishes } from '../reducers/dishesReducer.js';
@@ -14,8 +13,10 @@ import {
   Card,
   CardItem,
   Text,
-  Button,
   Body,
+  Title,
+  Left,
+  Right,
 } from 'native-base';
 
 class HomePage extends React.Component {
@@ -28,10 +29,16 @@ class HomePage extends React.Component {
   }
 
   render() {
-    const { navigation, data } = this.props;
+    const { data } = this.props;
     return (
       <Container>
-        <Header />
+        <Header>
+          <Left />
+          <Body>
+            <Title>Home</Title>
+          </Body>
+          <Right />
+        </Header>
         <Content>
           {data &&
             data.dishes.map(dish => {
@@ -51,15 +58,6 @@ class HomePage extends React.Component {
                 </Card>
               );
             })}
-          <Button onPress={() => navigation.push(screens.LOGIN_SCREEN)}>
-            <Text>Go to login page</Text>
-          </Button>
-          <Button onPress={() => navigation.push(screens.SIGN_UP_SCREEN)}>
-            <Text>Go to sign up page</Text>
-          </Button>
-          <Button onPress={() => navigation.push(screens.NOT_FOUND_PAGE)}>
-            <Text>Go to 404</Text>
-          </Button>
         </Content>
       </Container>
     );
