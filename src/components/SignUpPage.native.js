@@ -5,42 +5,44 @@ import { connect } from 'react-redux';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import { postLogin } from '../reducers/loginReducer';
+import { postSignUp } from '../reducers/signUpReducer';
 import { View, Button, Text, TextInput } from 'react-native';
-import { SIGN_UP_SCREEN } from '../constants/screens';
+import { LOGIN_SCREEN } from '../constants/screens';
 
-class LoginPage extends Component {
+class SignUpPage extends Component {
   static propTypes = {
-    postLogin: PropTypes.func.isRequired,
+    postSignUp: PropTypes.func.isRequired,
+    navigation: PropTypes.object.isRequired,
     isFetching: PropTypes.bool.isRequired,
     error: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
-    navigation: PropTypes.object.isRequired,
+    madeSignUp: PropTypes.bool.isRequired,
   };
 
   componentDidUpdate() {
-    const { isLoggedIn, navigation } = this.props;
+    const { madeSignUp, navigation } = this.props;
 
-    if (isLoggedIn) {
-      navigation.navigate('App');
+    if (madeSignUp) {
+      navigation.navigate('Login');
     }
   }
 
   render() {
-    const { postLogin, navigation } = this.props;
-
+    const { postSignUp, navigation } = this.props;
     return (
       <View>
-        <Text>Login screen</Text>
+        <Text>Sign up screen</Text>
         <Formik
-          initialValues={{ username: '', password: '' }}
+          initialValues={{ username: '', password: '', confirmPassword: '' }}
           validationSchema={Yup.object({
             username: Yup.string().required('Please type your username.'),
             password: Yup.string().required('Please type your password.'),
+            confirmPassword: Yup.string()
+              .oneOf([Yup.ref('password'), null], 'Passwords must match')
+              .required('Please confirm your password.'),
           })}
           onSubmit={(values, { setSubmitting }) => {
             setSubmitting(false);
-            postLogin(values);
+            postSignUp(values);
           }}
         >
           {({
@@ -73,10 +75,21 @@ class LoginPage extends Component {
                 {touched.password && errors.password}
               </Text>
 
-              <Button title="Login" onPress={handleSubmit}></Button>
+              <Text>Confirm password:</Text>
+              <TextInput
+                secureTextEntry
+                onChangeText={handleChange('confirmPassword')}
+                onBlur={handleBlur('confirmPassword')}
+                value={values.confirmPassword}
+              />
+              <Text style={{ fontSize: 10, color: 'red' }}>
+                {touched.confirmPassword && errors.confirmPassword}
+              </Text>
+
+              <Button title="Sign up" onPress={handleSubmit}></Button>
               <Button
-                title="Sign up"
-                onPress={() => navigation.push(SIGN_UP_SCREEN)}
+                title="Cancel"
+                onPress={() => navigation.navigate(LOGIN_SCREEN)}
               ></Button>
             </View>
           )}
@@ -88,16 +101,16 @@ class LoginPage extends Component {
 
 const mapStateToProps = state => {
   return {
-    isFetching: state.login.isFetching,
-    error: state.login.error,
-    isLoggedIn: state.login.isLoggedIn,
+    isFetching: state.signUp.isFetching,
+    error: state.signUp.error,
+    madeSignUp: state.signUp.madeSignUp,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    postLogin: bindActionCreators(postLogin, dispatch),
+    postSignUp: bindActionCreators(postSignUp, dispatch),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpPage);

@@ -3,13 +3,14 @@ import { createStackNavigator } from 'react-navigation-stack';
 import transitionConfig from '../utils/transitionConfig';
 import HomePage from './HomePage';
 import LoginPage from './LoginPage';
+import SignUpPage from './SignUpPage';
 
 const AppStack = createStackNavigator(
   { Home: HomePage },
   { headerMode: 'float', transitionConfig }
 );
 const AuthStack = createStackNavigator(
-  { Login: LoginPage },
+  { Login: LoginPage, SignUp: SignUpPage },
   { headerMode: 'float', transitionConfig }
 );
 
